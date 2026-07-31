@@ -8,5 +8,11 @@
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0"
+  }
 }
