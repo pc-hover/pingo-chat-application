@@ -5,12 +5,14 @@ import { UsersRepository } from './entities/users.repository';
 import * as bcrypt from "bcrypt"
 @Injectable()
 export class UsersService {
-
+  private async hashPassword(password: string) {
+    return bcrypt.hash(password, 10);
+  }
   constructor(private readonly usersRepository: UsersRepository) { }
   async create(createUserInput: CreateUserInput) {
     return this.usersRepository.create({
       ...createUserInput,
-      password: await bcrypt.hash(createUserInput.password, 10)
+      password: await this.hashPassword(createUserInput.password)
 
     })
   }
@@ -19,15 +21,26 @@ export class UsersService {
     return this.usersRepository.find({});
   }
 
-  async findOne(id: string) {
-    return this.usersRepository.findOne({ _id: id })
+  async findOne(_id: string) {
+    return this.usersRepository.findOne({ _id })
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  async update(_id: string, updateUserInput: UpdateUserInput) {
+    if (updateUserInput.password) {
+      updateUserInput.password = await this.hashPassword(updateUserInput.password);
+    }
+    return this.usersRepository.findAndUpdate(
+      { _id },
+      {
+        $set: {
+          ...updateUserInput,
+
+        },
+      },
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(_id: string) {
+    return await this.usersRepository.findAndDelete({ _id });
   }
 }
