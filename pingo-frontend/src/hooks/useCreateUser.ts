@@ -1,7 +1,8 @@
-//custom react hook 
+//custom reaxt hook 
 import { gql } from "@apollo/client"
 import { useMutation } from "@apollo/client/react"
 
+//user input
 export interface CreateUserInput {
   createUserInput: {
     email: string;

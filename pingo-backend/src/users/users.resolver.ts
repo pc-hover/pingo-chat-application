@@ -44,4 +44,12 @@ export class UsersResolver {
   removeUser(@CurrentUser() user: TokenPayload) {
     return this.usersService.remove(user._id);
   }
+
+  @UseGuards(GqlAuthGuard)
+  @Query(() => User, { name: 'me' })
+  getme(@CurrentUser() user: TokenPayload) {
+    return user
+  }
+
+
 }

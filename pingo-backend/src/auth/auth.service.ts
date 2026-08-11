@@ -12,7 +12,7 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) { }
     async login(user: User, response: Response) {
-        console.log(user)
+
         const expires = new Date()
         expires.setSeconds(expires.getSeconds() + this.configService.getOrThrow("JWT_EXPIRATION"))
 

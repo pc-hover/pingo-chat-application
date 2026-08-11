@@ -4,9 +4,10 @@ import { useState } from "react";
 interface AuthType {
     submitButtonLabel: string,
     onSubmit: (credentials: { email: string, password: string }) => Promise<void>
-    children: React.ReactNode
+    children: React.ReactNode,
+    error?: string
 }
-const Auth = ({ submitButtonLabel, onSubmit, children }: AuthType) => {
+const Auth = ({ submitButtonLabel, onSubmit, children, error }: AuthType) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
 
@@ -30,10 +31,10 @@ const Auth = ({ submitButtonLabel, onSubmit, children }: AuthType) => {
         >
             {submitButtonLabel}
         </h1>
-        <TextField type="email" label="Email" variant="outlined" value={email} onChange={(event) => {
+        <TextField type="email" label="Email" variant="outlined" value={email} error={!!error} helperText={error} onChange={(event) => {
             setEmail(event.target.value)
         }} />
-        <TextField type="password" label="Password" variant="outlined" value={password} onChange={(event) => {
+        <TextField type="password" label="Password" variant="outlined" value={password} error={!!error} helperText={error} onChange={(event) => {
             setPassword(event.target.value)
         }} />
         <Button variant="contained" onClick={() => { onSubmit({ email, password }) }} >{submitButtonLabel}</Button>
