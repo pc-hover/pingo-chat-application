@@ -4,7 +4,7 @@ import { RouterProvider } from "react-router-dom"
 import { ApolloProvider } from "@apollo/client/react";
 import client from "./constants/apollo-client";
 import Guard from "./components/auth/Guard";
-import Header from "./components/Header/Header";
+import Header from "./components/header/Header";
 const darkTheme = createTheme({
   palette: {
     mode: "dark"

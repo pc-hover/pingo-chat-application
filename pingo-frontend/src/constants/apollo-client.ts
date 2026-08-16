@@ -4,6 +4,7 @@ import { CombinedGraphQLErrors } from "@apollo/client/errors";
 import { API_URL } from "./urls";
 import excludedRoutes from "./excluded-routes";
 import router from "../components/Routes";
+import onLogout from "../utils/onLogout";
 
 let client: ApolloClient;
 
@@ -13,8 +14,7 @@ const logoutLink = new ErrorLink(({ error }) => {
         const statusCode = (error.errors[0]?.extensions?.originalError as any)?.statusCode;
 
         if (statusCode === 401 && !excludedRoutes.includes(window.location.pathname)) {
-            router.navigate('/login');
-            client?.resetStore();
+            onLogout()
         }
     }
 });

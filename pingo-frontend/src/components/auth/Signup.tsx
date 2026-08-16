@@ -25,7 +25,7 @@ const Signup = () => {
                     await login({ email, password })
                     setError("")
                 } catch (err) {
-                    console.log("\n\n\n\n\n " + JSON.stringify(err))
+
                     const errorMessage = extractErrorMessage(err)
                     if (errorMessage) {
                         setError(errorMessage)
