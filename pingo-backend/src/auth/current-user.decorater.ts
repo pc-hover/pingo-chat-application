@@ -17,4 +17,5 @@ export const CurrentUser = createParamDecorator((_data: unknown, context: Execut
 
 /*
 Get user out of req meta data
+After verification we attatched user to req payload
 */

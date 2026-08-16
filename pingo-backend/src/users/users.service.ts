@@ -20,7 +20,6 @@ export class UsersService {
     }
     catch (err: any) {
       if (err.message.includes('E11000')) {
-        console.log("happy thoughs")
         throw new UnprocessableEntityException("Email already exists")
       }
       throw err

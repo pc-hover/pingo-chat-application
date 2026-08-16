@@ -15,7 +15,7 @@ export class AuthController {
         return this.authService.login(user, response)
     }
 
-    @Get('/homepage')
+    @Get('/')
     @UseGuards(JwtAuthGuard)
     async homepage() { }
 

@@ -1,7 +1,7 @@
 const Home = () => {
     return <>
-        <p>Hello from Priyanshu</p>
+        <h1>Pingo Home </h1>
     </>
 }
 
-export { Home }
+export default Home

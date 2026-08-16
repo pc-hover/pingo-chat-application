@@ -4,9 +4,11 @@ import { Link as MUILink } from "@mui/material"
 import { useCreateUser } from "../../hooks/useCreateUser";
 import { useState } from "react";
 import { extractErrorMessage } from "../../utils/erros";
+import { useLogin } from "../../hooks/useLogin";
 const Signup = () => {
     const [createUser] = useCreateUser()
     const [error, setError] = useState("");
+    const { login } = useLogin()
     return (<>
         <Auth submitButtonLabel="Signup"
             error={error}
@@ -20,7 +22,7 @@ const Signup = () => {
                             }
                         }
                     });
-
+                    await login({ email, password })
                     setError("")
                 } catch (err) {
                     console.log("\n\n\n\n\n " + JSON.stringify(err))
