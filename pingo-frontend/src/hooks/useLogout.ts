@@ -4,10 +4,13 @@ const useLogout = () => {
 
     const logout = async () => {
 
-        await fetch(`${API_URL}/auth/logout`, {
+        const res = await fetch(`${API_URL}/auth/logout`, {
             method: "POST",
 
         })
+        if (!res.ok) {
+            throw new Error("Error logging out")
+        }
     }
     return { logout }
 }

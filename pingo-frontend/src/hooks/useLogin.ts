@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { API_URL } from "../constants/urls"
 import client from "../constants/apollo-client"
+import { UNKNOWN_ERROR_MESSAGE } from "../constants/error"
 
 interface userLoginInput {
     email: string,
@@ -31,7 +32,7 @@ const useLogin = () => {
                     setError("Credentials are not valid")
                 }
                 else {
-                    setError("Unknown error occured")
+                    setError(UNKNOWN_ERROR_MESSAGE)
                 }
                 return;
             }
@@ -39,9 +40,10 @@ const useLogin = () => {
             await client.refetchQueries({ include: "active" });
         }
         catch (err) {
-            setError("Unknown Error has Occured")
+            setError(UNKNOWN_ERROR_MESSAGE)
         }
     }
     return { login, error };
 }
 export { useLogin }
+

@@ -1,6 +1,5 @@
 import { useQuery } from "@apollo/client/react";
 import { gql } from "@apollo/client";
-import type { User } from "../models/User";
 
 const GET_ME = gql`
   query Me {
@@ -11,9 +10,15 @@ const GET_ME = gql`
   }
 `;
 
-const useGetMe = () => {
-  const data = useQuery(GET_ME)
-  return data
+interface MeQueryResult {
+  me: {
+    _id: string;
+    email: string;
+  };
 }
 
+const useGetMe = () => {
+  return useQuery<MeQueryResult>(GET_ME);
+};
 export { useGetMe }
+
