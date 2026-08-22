@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { LoggerModule } from "nestjs-pino"
 import { ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { ChatsModule } from './chats/chats.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -44,7 +45,8 @@ import { AuthModule } from './auth/auth.module';
         }
       }
     }),
-    AuthModule
+    AuthModule,
+    ChatsModule
   ],
   controllers: [AppController],
   providers: [AppService],

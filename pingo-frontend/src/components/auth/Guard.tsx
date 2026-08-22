@@ -5,6 +5,8 @@ import { authenticatedVar } from "../../constants/authenticate";
 import { snackVar } from "../../constants/snack";
 import { UNKNOWN_ERROR_SNACK_MESSAGE } from "../../constants/error";
 import { CombinedGraphQLErrors } from "@apollo/client";
+import { usePath } from "../../hooks/usePath";
+
 interface GuardProps {
     children: ReactNode;
 }
@@ -13,7 +15,7 @@ const Guard = ({ children }: GuardProps) => {
     const { data, error } = useGetMe();
     const user = data;
     // console.log("Inside GUARD", user)
-
+    const { path } = usePath()
     useEffect(() => {
         if (user) {
             authenticatedVar(true)
@@ -27,7 +29,7 @@ const Guard = ({ children }: GuardProps) => {
     }, [error])
     return (
         <>
-            {excludedRoutes.includes(window.location.pathname) ? children : user && children}
+            {excludedRoutes.includes(path) ? children : user && children}
         </>
     );
 };
