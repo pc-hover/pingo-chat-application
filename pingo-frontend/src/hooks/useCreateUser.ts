@@ -1,26 +1,19 @@
 //custom reaxt hook 
-import { gql } from "@apollo/client"
 import { useMutation } from "@apollo/client/react"
+import { graphql } from "../gql";
 
-//user input
-export interface CreateUserInput {
-  createUserInput: {
-    email: string;
-    password: string
-  }
-}
 
-const CREATE_USER = gql`
+const createUserDocument = graphql(`
   mutation CreateUser($createUserInput: CreateUserInput!) {
     createUser(createUserInput: $createUserInput) {
       _id
-      email
+     email
     }
   }
-`
+`);
 
 //Data type is required
 const useCreateUser = () => {
-  return useMutation(CREATE_USER)
+  return useMutation(createUserDocument)
 };
 export { useCreateUser }

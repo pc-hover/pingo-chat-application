@@ -4,7 +4,6 @@ import { Chat } from './entities/chat.entity';
 import { CreateChatInput } from './dto/create-chat.input';
 import { UpdateChatInput } from './dto/update-chat.input';
 import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { ObjectId } from 'mongodb';
 import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { CurrentUser } from 'src/auth/current-user.decorater';
@@ -12,12 +11,14 @@ import { TokenPayload } from 'src/auth/token-payload.interface';
 
 @Resolver(() => Chat)
 export class ChatsResolver {
-  constructor(private readonly chatsService: ChatsService, userId: ObjectId) { }
+  constructor(private readonly chatsService: ChatsService) { }
 
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Chat)
   createChat(@Args('createChatInput') createChatInput: CreateChatInput, @CurrentUser() user: TokenPayload) {
+    console.log("Resolver.CurrentPayload: " + JSON.stringify(user))
+    console.log(createChatInput)
     return this.chatsService.create(createChatInput, user._id);
   }
 

@@ -3,10 +3,11 @@ import { ChatsService } from './chats.service';
 import { ChatsResolver } from './chats.resolver';
 import { Chat, ChatSchema } from './entities/chat.entity';
 import { DatabaseModule } from 'src/common/database/database.module';
+import { ChatsRepository } from './chats.repository';
 @Module({
   imports: [
     DatabaseModule.forFeature([{ name: Chat.name, schema: ChatSchema }]),
   ],
-  providers: [ChatsResolver, ChatsService],
+  providers: [ChatsResolver, ChatsService, ChatsRepository],
 })
 export class ChatsModule { }

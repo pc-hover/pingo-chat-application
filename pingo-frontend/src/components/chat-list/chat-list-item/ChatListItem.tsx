@@ -5,9 +5,11 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
+interface ChatListProps {
+    name?: string | null;
+}
 
-
-const ChatListItem = () => {
+const ChatListItem = ({ name }: ChatListProps) => {
     return (<>
 
 
@@ -16,7 +18,7 @@ const ChatListItem = () => {
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             </ListItemAvatar>
             <ListItemText
-                primary="Brunch this 1weekend?"
+                primary={name}
                 secondary={
                     <>
                         <Typography

@@ -2,23 +2,25 @@ import { Injectable, UseGuards } from '@nestjs/common';
 import { CreateChatInput } from './dto/create-chat.input';
 import { UpdateChatInput } from './dto/update-chat.input';
 import { ChatsRepository } from './chats.repository';
-import { AuthGuard } from '@nestjs/passport';
+import { CurrentUser } from 'src/auth/current-user.decorater';
+
 
 @Injectable()
 export class ChatsService {
 
   constructor(private readonly chatsRepository: ChatsRepository) { }
 
-  create(createChatInput: CreateChatInput, userId: string) {
+  async create(createChatInput: CreateChatInput, userId: string) {
     return this.chatsRepository.create({
       ...createChatInput,
       userId,
-      userids: createChatInput.userIds || []
+      userIds: createChatInput.userIds || []
     })
   }
 
-  findAll() {
-    return `This action returns all chats`;
+  async findAll() {
+
+    return this.chatsRepository.find({})
   }
 
   findOne(id: number) {
