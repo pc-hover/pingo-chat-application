@@ -8,6 +8,12 @@ const config: CodegenConfig = {
         'src/gql/': {
             preset: 'client',
             plugins: [],
+            config: {
+                useTypeImports: true,
+                scalars: {
+                    DateTime: 'string',
+                }
+            },
             presetConfig: {
                 fragmentMasking: false
             }

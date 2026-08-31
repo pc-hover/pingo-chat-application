@@ -27,18 +27,21 @@ function App() {
         <Header></Header>
 
         <Guard>
-          {
-            showChatList ? (
-              <Grid container>
-                <Grid size={{ md: 3 }}>
-                  <ChatList />
+          <Container maxWidth="xl" sx={{ marginTop: "1rem" }}>
+
+            {
+              showChatList ? (
+                <Grid container spacing={5}>
+                  <Grid size={{ xs: 12, md: 5, xl: 3, lg: 4 }}>
+                    <ChatList />
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 7, lg: 8, xl: 9 }}>
+                    <Routes />
+                  </Grid>
                 </Grid>
-                <Grid size={{ md: 9 }}>
-                  <Routes />
-                </Grid>
-              </Grid>
-            ) : <Routes />
-          }
+              ) : <Routes />
+            }
+          </Container>
         </Guard>
 
         <Snackbar />
@@ -50,11 +53,7 @@ function App() {
 }
 const Routes = () => {
   return (<>
-    <Container sx={{ height: "100%" }}>
-
-      <RouterProvider router={router} />
-
-    </Container>
+    <RouterProvider router={router} />
   </>)
 }
 
