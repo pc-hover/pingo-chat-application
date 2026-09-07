@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, UnauthorizedException } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -12,6 +12,9 @@ import { ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { ChatsModule } from './chats/chats.module';
 import { PubSubModule } from './common/pubsub/pubsub.module';
+import { Request } from 'express';
+import { AuthService } from './auth/auth.service';
+import { Logger } from '@nestjs/common';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -21,12 +24,30 @@ import { PubSubModule } from './common/pubsub/pubsub.module';
         // NODE_ENV: 'production'
       }),
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: true,
-      subscriptions: {
-        'graphql-ws': true
-      }
+      useFactory: (authService: AuthService) => ({
+        autoSchemaFile: true,
+        subscriptions: {
+          'graphql-ws': {
+            onConnect: (context: any) => {
+              try {
+                const request: Request = context.extra.request;
+                const user = authService.verifyWs(request)
+                context.user = user;
+
+              } catch (err) {
+                new Logger().error(err);
+                console.log("Error from App Module", err)
+                throw new UnauthorizedException()
+              }
+            }
+          }
+        }
+      }),
+      imports: [AuthModule],
+      inject: [AuthService]
+
     }),
     DatabaseModule,
     UsersModule,
@@ -57,3 +78,8 @@ import { PubSubModule } from './common/pubsub/pubsub.module';
   providers: [AppService],
 })
 export class AppModule { }
+
+
+// subscriptions: {
+//       'graphql-ws': true
+//     }

@@ -13,7 +13,9 @@ export default defineConfig({
       '/auth': {
         target: 'http://localhost:3001',
         changeOrigin: true,
-      }
+      },
+
     }
+    // , port: 3000
   }
 })

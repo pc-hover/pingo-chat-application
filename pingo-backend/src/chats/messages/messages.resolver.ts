@@ -37,14 +37,17 @@ export class MessagesResolver {
   }
 
   @Subscription(() => Message, {
-    filter: (payload, variables) => {
-      return payload.message.chatId === variables.chatId
+    filter: (payload, variables, context) => {
+      const userId = context.req.user._id
+      return payload.messageCreated.chatId === variables.chatId && userId !== payload.messageCreated.userId
     }
   })
-  messageCreated(@Args() messageCreatedArgs: MessageCreatedArgs) {
-    return this.pubSub.asyncIterableIterator(MESSAGE_CREATED)
+  messageCreated(@Args() messageCreatedArgs: MessageCreatedArgs, @CurrentUser() user: TokenPayload) {
+    return this.messagesService.messageCreated(messageCreatedArgs, user._id)
   }
 
 
 
 }
+
+

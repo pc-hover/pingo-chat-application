@@ -9,6 +9,21 @@ import { CurrentUser } from 'src/auth/current-user.decorater';
 export class ChatsService {
 
   constructor(private readonly chatsRepository: ChatsRepository) { }
+  userChatFilter(userId: string) {
+    return ({
+      $or: [
+        { userId },
+        {
+          userIds: {
+
+            $in: [userId]
+          }
+        },
+        { isPrivate: false }
+      ]
+
+    })
+  }
 
   async create(createChatInput: CreateChatInput, userId: string) {
     return this.chatsRepository.create({
@@ -19,9 +34,11 @@ export class ChatsService {
     })
   }
 
-  async findAll() {
+  async findAll(userId: string) {
 
-    return this.chatsRepository.find({})
+    return this.chatsRepository.find({
+      ...this.userChatFilter(userId)
+    })
   }
 
   async findOne(_id: string) {

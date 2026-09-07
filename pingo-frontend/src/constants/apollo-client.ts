@@ -1,12 +1,15 @@
-import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+import { ApolloClient, InMemoryCache, HttpLink, split, ApolloLink } from "@apollo/client";
 import { ErrorLink } from "@apollo/client/link/error";
 import { CombinedGraphQLErrors } from "@apollo/client/errors";
-import { API_URL } from "./urls";
+import { API_URL, WS_URL } from "./urls";
 import excludedRoutes from "./excluded-routes";
 import router from "../components/Routes";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions"
 import onLogout from "../utils/onLogout";
+import { createClient } from "graphql-ws";
+import { getMainDefinition } from "@apollo/client/utilities";
 
-let client: ApolloClient;
+// let client: ApolloClient;
 
 const logoutLink = new ErrorLink(({ error }) => {
     if (CombinedGraphQLErrors.is(error)) {
@@ -20,10 +23,27 @@ const logoutLink = new ErrorLink(({ error }) => {
 });
 
 const httpLink = new HttpLink({ uri: `${API_URL}/graphql`, credentials: 'include' });
+const wsLink = new GraphQLWsLink(
+    createClient({
+        url: `ws://${WS_URL}/graphql`
+    })
+)
 
-client = new ApolloClient({
-    link: logoutLink.concat(httpLink),
+const splitLink = ApolloLink.split(
+
+    ({ query }) => {
+        const definition = getMainDefinition(query)
+        return (
+            definition.kind === "OperationDefinition" &&
+            definition.operation === "subscription"
+        );
+    }, wsLink, httpLink
+)
+
+
+const client = new ApolloClient({
+    link: logoutLink.concat(splitLink),
     cache: new InMemoryCache(),
 });
 
-export default client; 777
+export default client;

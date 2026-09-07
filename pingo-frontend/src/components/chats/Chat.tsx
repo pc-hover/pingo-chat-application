@@ -5,27 +5,47 @@ import SendIcon from '@mui/icons-material/Send';
 import { useCreateMessage } from "../../hooks/useCreateMessage";
 import { useState, useRef, useEffect } from "react";
 import { useGetMessages } from "../../hooks/useGetMessages";
-
+import { useMessageCreated } from "../../hooks/useMessageCreated";
+import type { MessageFragmentFragment } from "../../gql/graphql";
 const Chat = () => {
 
     const params = useParams()
     const chatId = params._id!
     const { data } = useGetChat({ _id: chatId })
     const [message, setMessage] = useState("")
-    const [createMessage] = useCreateMessage(chatId)
-    const { data: messages } = useGetMessages({ chatId })
+    const [createMessage] = useCreateMessage()
+    const { data: existingMessages } = useGetMessages({ chatId })
     const handleCreateMessage = async () => {
         await createMessage({ variables: { createMessageInput: { content: message, chatId } } })
         setMessage("")
         scrollToBottom();
     }
+    useMessageCreated({ chatId })
+    const [messages, setMessages] = useState<MessageFragmentFragment[]>([]);
+
+    useEffect(() => {
+        if (existingMessages) {
+            setMessages(existingMessages.messages)
+        }
+    }, [existingMessages])
+
+    // useEffect(() => {
+    //     const existingLatestMessage = messages[messages.length - 1]?._id;
+    //     if (latestMessage?.messageCreated && existingLatestMessage !== latestMessage.messageCreated._id) {
+    //         setMessages([...messages, latestMessage.messageCreated])
+    //     }
+    // }, [latestMessage, messages])
+
     const scrollToBottom = () => divRef.current?.scrollIntoView();
     const location = useLocation()
     const divRef = useRef<HTMLDivElement | null>(null)
+
     useEffect(() => {
         setMessage("")
         scrollToBottom();
-    }, [location, messages])
+    }, [location.pathname, messages])
+
+
     return <>
         <Stack
             sx={{
@@ -41,31 +61,37 @@ const Chat = () => {
                 }
             }}
             >
-                {messages?.messages.map(message => (
-                    <Grid container sx={{ marginBottom: "1rem", alignItems: "center" }} key={message._id}>
-                        <Grid size={{ xs: 2, lg: 1 }}>
-                            <Avatar src="" sx={{ width: 52, height: 52 }} />
-                        </Grid>
-                        <Grid size={{ xs: 10, lg: 11 }}>
-                            <Stack>
-                                <Paper sx={{ width: "fit-content" }}>
-                                    <Typography sx={{ padding: "0.9rem" }}>
-                                        {message.content}
+
+
+                {
+                    messages && [...messages].sort((messageA, messageB) =>
+                        new Date(messageA.createdAt).getTime() -
+                        new Date(messageB.createdAt).getTime()
+                    ).map(message => (
+                        <Grid container sx={{ marginBottom: "1rem", alignItems: "center" }} key={message._id}>
+                            <Grid size={{ xs: 2, lg: 1 }}>
+                                <Avatar src="" sx={{ width: 52, height: 52 }} />
+                            </Grid>
+                            <Grid size={{ xs: 10, lg: 11 }}>
+                                <Stack>
+                                    <Paper sx={{ width: "fit-content" }}>
+                                        <Typography sx={{ padding: "0.9rem" }}>
+                                            {message.content}
+                                        </Typography>
+                                    </Paper>
+                                    <Typography variant="caption"
+                                        sx={{ marginLeft: "0.25" }}
+                                    >
+                                        {new Date(message.createdAt).toLocaleTimeString([], {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            hour12: true
+                                        })}
                                     </Typography>
-                                </Paper>
-                                <Typography variant="caption"
-                                    sx={{ marginLeft: "0.25" }}
-                                >
-                                    {new Date(message.createdAt).toLocaleTimeString([], {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        hour12: true
-                                    })}
-                                </Typography>
-                            </Stack>
+                                </Stack>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                ))}
+                    ))}
 
                 <div ref={divRef}></div>
 
