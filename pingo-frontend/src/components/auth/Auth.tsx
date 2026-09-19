@@ -7,9 +7,10 @@ interface AuthType {
     submitButtonLabel: string,
     onSubmit: (credentials: { email: string, password: string }) => Promise<void>
     children: React.ReactNode,
-    error?: string
+    error?: string,
+    extraFields?: React.ReactNode[]
 }
-const Auth = ({ submitButtonLabel, onSubmit, children, error }: AuthType) => {
+const Auth = ({ submitButtonLabel, onSubmit, children, error, extraFields }: AuthType) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
     const { data } = useGetMe()
@@ -41,6 +42,9 @@ const Auth = ({ submitButtonLabel, onSubmit, children, error }: AuthType) => {
         <TextField type="email" label="Email" variant="outlined" value={email} error={!!error} helperText={error} onChange={(event) => {
             setEmail(event.target.value)
         }} />
+
+        {extraFields}
+
         <TextField type="password" label="Password" variant="outlined" value={password} error={!!error} helperText={error} onChange={(event) => {
             setPassword(event.target.value)
         }} />

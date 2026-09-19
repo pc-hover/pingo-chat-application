@@ -5,7 +5,6 @@ import SendIcon from '@mui/icons-material/Send';
 import { useCreateMessage } from "../../hooks/useCreateMessage";
 import { useState, useRef, useEffect } from "react";
 import { useGetMessages } from "../../hooks/useGetMessages";
-import { useMessageCreated } from "../../hooks/useMessageCreated";
 import type { MessageFragmentFragment } from "../../gql/graphql";
 const Chat = () => {
 
@@ -20,7 +19,7 @@ const Chat = () => {
         setMessage("")
         scrollToBottom();
     }
-    useMessageCreated({ chatId })
+
     const [messages, setMessages] = useState<MessageFragmentFragment[]>([]);
 
     useEffect(() => {

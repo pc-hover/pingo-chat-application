@@ -3,24 +3,10 @@ import { IsBoolean, IsString, IsNotEmpty, IsOptional, IsArray } from "class-vali
 import { Transform } from 'class-transformer';
 @InputType()
 export class CreateChatInput {
-  @Field({ nullable: true })
+  @Field()
   @IsString()
   @IsNotEmpty()
-  @IsOptional()
-  name?: string
-
-  @Field()
-  @IsBoolean()
-  @Transform(({ value }) => value === "true")
-  isPrivate: boolean
-
-  @Field(() => [String], { nullable: true })
-  @IsArray()
-  @IsString({ each: true })
-  @IsNotEmpty({ each: true })
-  @IsOptional()
-
-  userIds?: string[]
+  name: string
 
 }
 
