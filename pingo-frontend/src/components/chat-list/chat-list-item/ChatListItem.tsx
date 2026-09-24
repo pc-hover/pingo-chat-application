@@ -4,10 +4,11 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { ListItemButton } from '@mui/material';
+import { Box, ListItemButton } from '@mui/material';
 import router from '../../Routes';
 import type { ChatFragmentFragment } from "../../../gql/graphql"
-
+import { Divider } from '@mui/material';
+import "./ChatListItem.css"
 interface ChatListProps {
     chat: ChatFragmentFragment
     selected: boolean
@@ -25,7 +26,13 @@ const ChatListItem = ({ chat, selected }: ChatListProps) => {
                 <ListItemText
                     primary={chat.name}
                     secondary={
-                        <>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: 'row',
+                                gap: "0.5rem"
+                            }}
+                        >
                             <Typography
                                 component="span"
                                 variant="body2"
@@ -33,12 +40,15 @@ const ChatListItem = ({ chat, selected }: ChatListProps) => {
                             >
                                 {chat.latestMessage?.user.username || ""}
                             </Typography>
-                            {" " + (chat.latestMessage?.content || " ")}
-                        </>
+                            <div className='content'>
+                                {" " + (chat.latestMessage?.content || " ")}
+                            </div>
+                        </Box>
                     }
                 />
             </ListItemButton>
         </ListItem >
+        <Divider variant="inset" />
 
     </>)
 }

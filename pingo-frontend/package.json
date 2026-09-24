@@ -23,6 +23,7 @@
     "graphql-ws": "^6.2.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-infinite-scroll-component": "^7.2.1",
     "react-router-dom": "^7.17.0"
   },
   "devDependencies": {
@@ -40,6 +41,7 @@
     "globals": "^17.6.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.12"
+    "vite": "^8.0.12",
+    "vite-plugin-checker": "^0.14.5"
   }
 }

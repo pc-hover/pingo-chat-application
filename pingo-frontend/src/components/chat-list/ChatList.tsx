@@ -1,4 +1,4 @@
-import List from '@mui/material/List';
+import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import ChatListItem from './chat-list-item/ChatListItem';
 import ChatListHeader from './chat-list-header/ChatListHeader';
@@ -9,13 +9,28 @@ import { useGetChats } from '../../hooks/useGetChats';
 import { useEffect } from 'react';
 import { usePath } from '../../hooks/usePath';
 import { useMessageCreated } from '../../hooks/useMessageCreated';
+import { PAGE_SIZE } from '../../constants/page-size';
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { useCountChats } from '../../hooks/useCountChats';
+
+
 const ChatList = () => {
 
     const [chatListAddVisible, setChatListAddVisible] = useState(false)
-    const { data } = useGetChats();
+    const { data, fetchMore } = useGetChats(
+        {
+            skip: 0,
+            limit: PAGE_SIZE
+        }
+    );
     const [selectedChatId, setSelectedChatid] = useState("")
     const { path } = usePath();
 
+    const { chatsCount, countChats } = useCountChats();
+
+    useEffect(() => {
+        countChats()
+    }, [countChats])
     useMessageCreated({
         chatIds: data?.chats.map((chat) => chat._id) || []
     })
@@ -31,26 +46,45 @@ const ChatList = () => {
             <Stack>
                 <ChatListHeader handleChatAdd={() => { setChatListAddVisible(true) }} />
                 <Divider />
-                <List sx={{ width: '100%', bgcolor: 'background.paper', maxHeight: "80vh", overflow: "auto" }}>
+                <Box id="chat-list-scroll" sx={{ width: '100%', bgcolor: 'background.paper', maxHeight: "80vh", overflow: "auto" }}>
+                    <InfiniteScroll
+                        dataLength={data?.chats.length ?? 0}
+                        next={() =>
+                            fetchMore({
+                                variables: {
+                                    skip: data?.chats.length ?? 0,
 
-                    {
-                        data?.chats && [...data.chats].sort((chatA, chatB) => {
-                            if (!chatA.latestMessage) {
-                                return -1;
-                            }
-                            const aTime = chatA.latestMessage ? new Date(chatA.latestMessage?.createdAt).getTime() : 0
-                            const bTime = chatB.latestMessage ? new Date(chatB.latestMessage?.createdAt).getTime() : 0
-                            return (
-                                aTime - bTime
-                            )
-                        })
+                                },
+                            })
+                        }
+                        hasMore={
+                            data?.chats && chatsCount ? data.chats.length < chatsCount : false
+                        }
+                        loader={<div style={{ textAlign: 'center', padding: 8 }}>Loading...</div>}
+                        scrollableTarget="chat-list-scroll"
+                        style={{ overflow: 'visible' }}
 
-                            .map((chat) => (
-                                <ChatListItem chat={chat} selected={chat._id === selectedChatId} />
-                            )).reverse()
-                    }
-                </List>
-            </Stack>
+                    >
+
+                        {
+                            data?.chats && [...data.chats].sort((chatA, chatB) => {
+                                if (!chatA.latestMessage) {
+                                    return -1;
+                                }
+                                const aTime = chatA.latestMessage ? new Date(chatA.latestMessage?.createdAt).getTime() : 0
+                                const bTime = chatB.latestMessage ? new Date(chatB.latestMessage?.createdAt).getTime() : 0
+                                return (
+                                    aTime - bTime
+                                )
+                            })
+
+                                .map((chat) => (
+                                    <ChatListItem chat={chat} selected={chat._id === selectedChatId} />
+                                )).reverse()
+                        }
+                    </InfiniteScroll>
+                </Box>
+            </Stack >
         </>
     );
 

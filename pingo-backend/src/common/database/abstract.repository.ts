@@ -33,9 +33,7 @@ export abstract class AbstractRepository<TDocument extends AbstractEntity> {
     }
     //findandupdate
     async findAndUpdate(filterQuery: QueryFilter<TDocument>, update: UpdateQuery<TDocument>): Promise<TDocument> {
-        const document = await this.model.findOneAndUpdate(filterQuery, update, {
-            new: true
-        })
+        const document = await this.model.findOneAndUpdate(filterQuery, update, { returnDocument: 'after' })
         if (!document) {
             this.logger.warn("Document not found in database")
             throw new NotFoundException("Data Not found in Database")

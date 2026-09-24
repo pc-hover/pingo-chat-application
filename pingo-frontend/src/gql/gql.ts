@@ -20,9 +20,9 @@ type Documents = {
     "\n    mutation CreateMessage ($createMessageInput:CreateMessageInput!){\n    createMessage(createMessageInput:$createMessageInput){\n  ...MessageFragment\n    }\n    }\n    ": typeof types.CreateMessageDocument,
     "\n  mutation CreateUser($createUserInput: CreateUserInput!) {\n    createUser(createUserInput: $createUserInput) {\n      _id\n     email\n    }\n  }\n": typeof types.CreateUserDocument,
     "\n\nquery Chat( $_id:String!){\nchat(_id:$_id){\n...ChatFragment\n\n}\n}\n\n": typeof types.ChatDocument,
-    "\nquery Chats{\nchats{\n...ChatFragment\n}\n\n}\n": typeof types.ChatsDocument,
+    "\nquery Chats($skip:Int!,$limit:Int!){\nchats(skip:$skip,limit:$limit){\n...ChatFragment\n}\n\n}\n": typeof types.ChatsDocument,
     "\n  query Me {\n    me {\n      _id\n      email\n    }\n  }\n": typeof types.MeDocument,
-    "\n    \n    query Messages ($chatId:String!){\n    messages(chatId:$chatId){\n    ...MessageFragment\n    }\n    }\n\n    ": typeof types.MessagesDocument,
+    "\n    \n    query Messages ($chatId: String!, $skip: Int!, $limit: Int!){\n    messages(chatId:$chatId, skip:$skip, limit:$limit){\n    ...MessageFragment\n    }\n    }\n\n    ": typeof types.MessagesDocument,
     "\n  subscription messageCreated($chatIds: [String!]!) {\n    messageCreated(chatIds: $chatIds) {\n      ...MessageFragment\n    }\n  }\n": typeof types.MessageCreatedDocument,
 };
 const documents: Documents = {
@@ -32,9 +32,9 @@ const documents: Documents = {
     "\n    mutation CreateMessage ($createMessageInput:CreateMessageInput!){\n    createMessage(createMessageInput:$createMessageInput){\n  ...MessageFragment\n    }\n    }\n    ": types.CreateMessageDocument,
     "\n  mutation CreateUser($createUserInput: CreateUserInput!) {\n    createUser(createUserInput: $createUserInput) {\n      _id\n     email\n    }\n  }\n": types.CreateUserDocument,
     "\n\nquery Chat( $_id:String!){\nchat(_id:$_id){\n...ChatFragment\n\n}\n}\n\n": types.ChatDocument,
-    "\nquery Chats{\nchats{\n...ChatFragment\n}\n\n}\n": types.ChatsDocument,
+    "\nquery Chats($skip:Int!,$limit:Int!){\nchats(skip:$skip,limit:$limit){\n...ChatFragment\n}\n\n}\n": types.ChatsDocument,
     "\n  query Me {\n    me {\n      _id\n      email\n    }\n  }\n": types.MeDocument,
-    "\n    \n    query Messages ($chatId:String!){\n    messages(chatId:$chatId){\n    ...MessageFragment\n    }\n    }\n\n    ": types.MessagesDocument,
+    "\n    \n    query Messages ($chatId: String!, $skip: Int!, $limit: Int!){\n    messages(chatId:$chatId, skip:$skip, limit:$limit){\n    ...MessageFragment\n    }\n    }\n\n    ": types.MessagesDocument,
     "\n  subscription messageCreated($chatIds: [String!]!) {\n    messageCreated(chatIds: $chatIds) {\n      ...MessageFragment\n    }\n  }\n": types.MessageCreatedDocument,
 };
 
@@ -79,7 +79,7 @@ export function graphql(source: "\n\nquery Chat( $_id:String!){\nchat(_id:$_id){
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\nquery Chats{\nchats{\n...ChatFragment\n}\n\n}\n"): (typeof documents)["\nquery Chats{\nchats{\n...ChatFragment\n}\n\n}\n"];
+export function graphql(source: "\nquery Chats($skip:Int!,$limit:Int!){\nchats(skip:$skip,limit:$limit){\n...ChatFragment\n}\n\n}\n"): (typeof documents)["\nquery Chats($skip:Int!,$limit:Int!){\nchats(skip:$skip,limit:$limit){\n...ChatFragment\n}\n\n}\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -87,7 +87,7 @@ export function graphql(source: "\n  query Me {\n    me {\n      _id\n      emai
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    \n    query Messages ($chatId:String!){\n    messages(chatId:$chatId){\n    ...MessageFragment\n    }\n    }\n\n    "): (typeof documents)["\n    \n    query Messages ($chatId:String!){\n    messages(chatId:$chatId){\n    ...MessageFragment\n    }\n    }\n\n    "];
+export function graphql(source: "\n    \n    query Messages ($chatId: String!, $skip: Int!, $limit: Int!){\n    messages(chatId:$chatId, skip:$skip, limit:$limit){\n    ...MessageFragment\n    }\n    }\n\n    "): (typeof documents)["\n    \n    query Messages ($chatId: String!, $skip: Int!, $limit: Int!){\n    messages(chatId:$chatId, skip:$skip, limit:$limit){\n    ...MessageFragment\n    }\n    }\n\n    "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

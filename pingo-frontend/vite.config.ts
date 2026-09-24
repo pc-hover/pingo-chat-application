@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-
+import checker from "vite-plugin-checker"
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), checker({ typescript: true })],
   server: {
     proxy: {
       '/graphql': {
@@ -15,6 +15,15 @@ export default defineConfig({
         changeOrigin: true,
       },
 
+      '/chats/count': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+
+      '/messages/count': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      }
     }
     // , port: 3000
   }

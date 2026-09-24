@@ -43,7 +43,31 @@ const splitLink = ApolloLink.split(
 
 const client = new ApolloClient({
     link: logoutLink.concat(splitLink),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+        typePolicies: {
+            Query: {
+                fields: {
+                    chats: {
+                        keyArgs: false,
+                        merge,
+                    },
+                    messages: {
+                        keyArgs: ["chatId"],
+                        merge
+                    }
+                },
+            },
+        },
+    }),
 });
 
+
+function merge(existing: any[] = [], incoming: any[], { args }: any) {
+    const merged = existing.slice(0);
+    const offset = args?.skip ?? 0;
+    for (let i = 0; i < incoming.length; i++) {
+        merged[offset + i] = incoming[i];
+    }
+    return merged;
+}
 export default client;
