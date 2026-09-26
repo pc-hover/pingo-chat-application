@@ -15,25 +15,27 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  */
 type Documents = {
     "\n   fragment ChatFragment on Chat{\n        _id\n        name\n        latestMessage{\n        ...MessageFragment\n        }\n        }\n    ": typeof types.ChatFragmentFragmentDoc,
-    "\n   fragment MessageFragment on Message{\n    _id,\n    content,\n    createdAt\n    chatId,\n    user{\n    _id\n    username\n    email\n    }\n        }\n    ": typeof types.MessageFragmentFragmentDoc,
+    "\n   fragment MessageFragment on Message{\n    _id,\n    content,\n    createdAt\n    chatId,\n    user{\n    ...UserFragment\n    }\n        }\n    ": typeof types.MessageFragmentFragmentDoc,
+    "\n    fragment UserFragment on User {\n        _id\n        email,\n        username,\n        imageUrl\n    }\n    ": typeof types.UserFragmentFragmentDoc,
     "\n    mutation CreateChat($createChatInput: CreateChatInput!){\n    createChat(createChatInput:$createChatInput){\n      ...ChatFragment\n        }\n    }\n    ": typeof types.CreateChatDocument,
     "\n    mutation CreateMessage ($createMessageInput:CreateMessageInput!){\n    createMessage(createMessageInput:$createMessageInput){\n  ...MessageFragment\n    }\n    }\n    ": typeof types.CreateMessageDocument,
     "\n  mutation CreateUser($createUserInput: CreateUserInput!) {\n    createUser(createUserInput: $createUserInput) {\n      _id\n     email\n    }\n  }\n": typeof types.CreateUserDocument,
     "\n\nquery Chat( $_id:String!){\nchat(_id:$_id){\n...ChatFragment\n\n}\n}\n\n": typeof types.ChatDocument,
     "\nquery Chats($skip:Int!,$limit:Int!){\nchats(skip:$skip,limit:$limit){\n...ChatFragment\n}\n\n}\n": typeof types.ChatsDocument,
-    "\n  query Me {\n    me {\n      _id\n      email\n    }\n  }\n": typeof types.MeDocument,
+    "\n  query Me {\n    me {\n   ...UserFragment \n    }\n  }\n": typeof types.MeDocument,
     "\n    \n    query Messages ($chatId: String!, $skip: Int!, $limit: Int!){\n    messages(chatId:$chatId, skip:$skip, limit:$limit){\n    ...MessageFragment\n    }\n    }\n\n    ": typeof types.MessagesDocument,
     "\n  subscription messageCreated($chatIds: [String!]!) {\n    messageCreated(chatIds: $chatIds) {\n      ...MessageFragment\n    }\n  }\n": typeof types.MessageCreatedDocument,
 };
 const documents: Documents = {
     "\n   fragment ChatFragment on Chat{\n        _id\n        name\n        latestMessage{\n        ...MessageFragment\n        }\n        }\n    ": types.ChatFragmentFragmentDoc,
-    "\n   fragment MessageFragment on Message{\n    _id,\n    content,\n    createdAt\n    chatId,\n    user{\n    _id\n    username\n    email\n    }\n        }\n    ": types.MessageFragmentFragmentDoc,
+    "\n   fragment MessageFragment on Message{\n    _id,\n    content,\n    createdAt\n    chatId,\n    user{\n    ...UserFragment\n    }\n        }\n    ": types.MessageFragmentFragmentDoc,
+    "\n    fragment UserFragment on User {\n        _id\n        email,\n        username,\n        imageUrl\n    }\n    ": types.UserFragmentFragmentDoc,
     "\n    mutation CreateChat($createChatInput: CreateChatInput!){\n    createChat(createChatInput:$createChatInput){\n      ...ChatFragment\n        }\n    }\n    ": types.CreateChatDocument,
     "\n    mutation CreateMessage ($createMessageInput:CreateMessageInput!){\n    createMessage(createMessageInput:$createMessageInput){\n  ...MessageFragment\n    }\n    }\n    ": types.CreateMessageDocument,
     "\n  mutation CreateUser($createUserInput: CreateUserInput!) {\n    createUser(createUserInput: $createUserInput) {\n      _id\n     email\n    }\n  }\n": types.CreateUserDocument,
     "\n\nquery Chat( $_id:String!){\nchat(_id:$_id){\n...ChatFragment\n\n}\n}\n\n": types.ChatDocument,
     "\nquery Chats($skip:Int!,$limit:Int!){\nchats(skip:$skip,limit:$limit){\n...ChatFragment\n}\n\n}\n": types.ChatsDocument,
-    "\n  query Me {\n    me {\n      _id\n      email\n    }\n  }\n": types.MeDocument,
+    "\n  query Me {\n    me {\n   ...UserFragment \n    }\n  }\n": types.MeDocument,
     "\n    \n    query Messages ($chatId: String!, $skip: Int!, $limit: Int!){\n    messages(chatId:$chatId, skip:$skip, limit:$limit){\n    ...MessageFragment\n    }\n    }\n\n    ": types.MessagesDocument,
     "\n  subscription messageCreated($chatIds: [String!]!) {\n    messageCreated(chatIds: $chatIds) {\n      ...MessageFragment\n    }\n  }\n": types.MessageCreatedDocument,
 };
@@ -59,7 +61,11 @@ export function graphql(source: "\n   fragment ChatFragment on Chat{\n        _i
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n   fragment MessageFragment on Message{\n    _id,\n    content,\n    createdAt\n    chatId,\n    user{\n    _id\n    username\n    email\n    }\n        }\n    "): (typeof documents)["\n   fragment MessageFragment on Message{\n    _id,\n    content,\n    createdAt\n    chatId,\n    user{\n    _id\n    username\n    email\n    }\n        }\n    "];
+export function graphql(source: "\n   fragment MessageFragment on Message{\n    _id,\n    content,\n    createdAt\n    chatId,\n    user{\n    ...UserFragment\n    }\n        }\n    "): (typeof documents)["\n   fragment MessageFragment on Message{\n    _id,\n    content,\n    createdAt\n    chatId,\n    user{\n    ...UserFragment\n    }\n        }\n    "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    fragment UserFragment on User {\n        _id\n        email,\n        username,\n        imageUrl\n    }\n    "): (typeof documents)["\n    fragment UserFragment on User {\n        _id\n        email,\n        username,\n        imageUrl\n    }\n    "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -83,7 +89,7 @@ export function graphql(source: "\nquery Chats($skip:Int!,$limit:Int!){\nchats(s
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query Me {\n    me {\n      _id\n      email\n    }\n  }\n"): (typeof documents)["\n  query Me {\n    me {\n      _id\n      email\n    }\n  }\n"];
+export function graphql(source: "\n  query Me {\n    me {\n   ...UserFragment \n    }\n  }\n"): (typeof documents)["\n  query Me {\n    me {\n   ...UserFragment \n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

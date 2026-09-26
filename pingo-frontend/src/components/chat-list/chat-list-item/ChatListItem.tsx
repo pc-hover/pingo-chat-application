@@ -21,7 +21,7 @@ const ChatListItem = ({ chat, selected }: ChatListProps) => {
             <ListItemButton onClick={() => { router.navigate(`/chats/${chat._id}`) }} selected={selected}>
 
                 <ListItemAvatar>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                    <Avatar alt="Remy Sharp" src={chat.latestMessage?.user.imageUrl} />
                 </ListItemAvatar>
                 <ListItemText
                     primary={chat.name}

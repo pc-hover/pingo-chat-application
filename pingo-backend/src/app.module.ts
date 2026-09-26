@@ -15,6 +15,7 @@ import { PubSubModule } from './common/pubsub/pubsub.module';
 import { Request } from 'express';
 import { AuthService } from './auth/auth.service';
 import { Logger } from '@nestjs/common';
+import { S3Module } from './common/s3/s3.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -72,7 +73,8 @@ import { Logger } from '@nestjs/common';
     }),
     AuthModule,
     ChatsModule,
-    PubSubModule
+    PubSubModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -10,6 +10,9 @@ import { useLogout } from '../../hooks/useLogout';
 import onLogout from '../../utils/onLogout';
 import { snackVar } from '../../constants/snack';
 import { UNKNOWN_ERROR_SNACK_MESSAGE } from "../../constants/error"
+import router from '../Routes';
+import { useGetChats } from '../../hooks/useGetChats';
+import { useGetMe } from '../../hooks/useGetMe';
 
 interface SettingsProps {
     settings: string[]
@@ -28,11 +31,12 @@ const Settings = ({ settings }: SettingsProps) => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+    const usernameFirstLetter = useGetMe().data?.me.username?.charAt(0).toUpperCase()
     return <>
-        <Box sx={{ flexGrow: 0 }}>
+        <Box sx={{ flexGrow: 0 }} >
             <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="P" />
+                    <Avatar alt="" src="">{usernameFirstLetter} </Avatar>
                 </IconButton>
             </Tooltip>
             <Menu
@@ -51,6 +55,14 @@ const Settings = ({ settings }: SettingsProps) => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
             >
+                <MenuItem
+                    key="profile"
+                    onClick={() => router.navigate('/profile')}
+                >
+                    <Typography sx={{ textAlign: 'center' }}>
+                        Profile
+                    </Typography>
+                </MenuItem>
 
                 <MenuItem key='logout' onClick={async () => {
 

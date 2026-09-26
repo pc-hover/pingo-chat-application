@@ -5,17 +5,19 @@ import { AbstractRepository } from "src/common/database/abstract.repository";
 import { AbstractEntity } from "src/common/database/abstract.entity";
 import { Field, ObjectType } from "@nestjs/graphql";
 
-@ObjectType()
-export class User extends AbstractEntity {
-    @Field()
+@Schema({ versionKey: false })
+export class UserDocument extends AbstractEntity {
+
+    @Prop()
     email: string;
 
+    @Prop()
 
-    @Field()
     username: string;
 
-    @Field()
-    imageUrl: string
+    @Prop()
+    password: string;
 
 }
 
+export const UserSchema = SchemaFactory.createForClass(UserDocument)

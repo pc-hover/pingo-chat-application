@@ -23,6 +23,10 @@ export default defineConfig({
       '/messages/count': {
         target: 'http://localhost:3001',
         changeOrigin: true,
+      },
+      '/users/image': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
       }
     }
     // , port: 3000
