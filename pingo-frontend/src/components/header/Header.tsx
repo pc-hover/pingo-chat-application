@@ -26,7 +26,6 @@ const unauthenticatedPages: Page[] = [
         path: "/signup"
     }
 ]
-const settings = ['Logout'];
 
 function Header() {
 
@@ -40,7 +39,7 @@ function Header() {
                     <MobileNavigation pages={authenticated ? pages : unauthenticatedPages} />
                     <MobileBranding />
                     <Navigation pages={authenticated ? pages : unauthenticatedPages} />
-                    {authenticated && <Settings settings={settings} />}
+                    {authenticated && <Settings />}
 
 
                 </Toolbar>

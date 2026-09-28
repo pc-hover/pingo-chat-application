@@ -1,7 +1,7 @@
-import { Box, FormControlLabel, FormGroup, Modal, Switch, Typography } from "@mui/material"
-import { Paper } from "@mui/material"
-import { InputBase, Stack } from "@mui/material"
-import { IconButton, TextField, Button } from "@mui/material"
+import { Box, Modal, Typography } from "@mui/material"
+
+import { Stack } from "@mui/material"
+import { TextField, Button } from "@mui/material"
 
 import { useState } from "react";
 import { useCreateChat } from "../../../hooks/useCreateChat";

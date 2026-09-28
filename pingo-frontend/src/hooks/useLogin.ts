@@ -7,10 +7,7 @@ interface userLoginInput {
     email: string,
     password: string
 }
-interface LoginResponse {
-    token?: string,
-    error?: string
-}
+
 
 const useLogin = () => {
     const [error, setError] = useState<string>()

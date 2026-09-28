@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { API_URL } from "../constants/urls";
 import { snackVar } from "../constants/snack";
-import { UNKNOWN_ERROR_MESSAGE, UNKNOWN_ERROR_SNACK_MESSAGE } from "../constants/error";
+import { UNKNOWN_ERROR_SNACK_MESSAGE } from "../constants/error";
 
 const useCountChats = () => {
     const [chatsCount, setChatsCount] = useState<number | undefined>();

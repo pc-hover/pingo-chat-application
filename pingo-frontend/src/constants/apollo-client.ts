@@ -1,9 +1,8 @@
-import { ApolloClient, InMemoryCache, HttpLink, split, ApolloLink } from "@apollo/client";
+import { ApolloClient, InMemoryCache, HttpLink, ApolloLink } from "@apollo/client";
 import { ErrorLink } from "@apollo/client/link/error";
 import { CombinedGraphQLErrors } from "@apollo/client/errors";
 import { API_URL, WS_URL } from "./urls";
 import excludedRoutes from "./excluded-routes";
-import router from "../components/Routes";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions"
 import onLogout from "../utils/onLogout";
 import { createClient } from "graphql-ws";

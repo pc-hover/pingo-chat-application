@@ -11,14 +11,10 @@ import onLogout from '../../utils/onLogout';
 import { snackVar } from '../../constants/snack';
 import { UNKNOWN_ERROR_SNACK_MESSAGE } from "../../constants/error"
 import router from '../Routes';
-import { useGetChats } from '../../hooks/useGetChats';
 import { useGetMe } from '../../hooks/useGetMe';
 
-interface SettingsProps {
-    settings: string[]
-}
 
-const Settings = ({ settings }: SettingsProps) => {
+const Settings = () => {
 
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const { logout } = useLogout()
@@ -31,12 +27,13 @@ const Settings = ({ settings }: SettingsProps) => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-    const usernameFirstLetter = useGetMe().data?.me.username?.charAt(0).toUpperCase()
+    const user = useGetMe().data
+    const imageUrl = user?.me.imageUrl
     return <>
         <Box sx={{ flexGrow: 0 }} >
             <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="" src="">{usernameFirstLetter} </Avatar>
+                    <Avatar alt="" src={imageUrl}>U </Avatar>
                 </IconButton>
             </Tooltip>
             <Menu
