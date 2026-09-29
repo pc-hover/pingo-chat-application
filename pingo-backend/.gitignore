@@ -55,3 +55,4 @@ aws-exports.ts
 __generated__/
 src/generated/
 
+.env.production
