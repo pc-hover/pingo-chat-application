@@ -1,3 +1,7 @@
 packages:
   - "pingo-frontend"
   - "pingo-backend"
+allowBuilds:
+  '@apollo/protobufjs': true
+  bcrypt: true
+  unrs-resolver: true

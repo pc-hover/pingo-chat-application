@@ -6,14 +6,18 @@ phases:
       nodejs: 22
     commands:
       - npm install -g pnpm
-      - cd pingo-backend
-      
+  pre_build:
+    commands:
+      - pnpm install --frozen-lockfile
   build:
     commands:
-      - pnpm run build
-      
+      - pnpm --filter pingo-backend run build
+      - pnpm --filter pingo-backend deploy --prod ./out
+      - cp -r pingo-backend/dist out/dist
+      - cp Procfile out/
+
 artifacts:
-  base-directory: pingo-backend
+  base-directory: out
   files:
     - '**/*'
 
