@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 22
+    commands:
+      - npm install -g pnpm
+      - cd pingo-backend
+      
+  build:
+    commands:
+      - pnpm run build
+      
+artifacts:
+  base-directory: pingo-backend
+  files:
+    - '**/*'
+
+cache:
+  paths:
+    - '/root/.local/share/pnpm/store/**/*'
