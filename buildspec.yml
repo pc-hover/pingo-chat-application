@@ -15,7 +15,8 @@ phases:
       - pnpm --filter pingo-backend deploy --prod ./out
       - cp -r pingo-backend/dist out/dist
       - cp Procfile out/
-
+      - ls out
+      - test -d out/node_modules/@nestjs/core
 artifacts:
   base-directory: out
   files:
