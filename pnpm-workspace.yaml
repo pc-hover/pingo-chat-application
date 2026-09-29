@@ -5,3 +5,4 @@ allowBuilds:
   '@apollo/protobufjs': true
   bcrypt: true
   unrs-resolver: true
+  '@parcel/watcher': false
