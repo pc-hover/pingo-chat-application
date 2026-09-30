@@ -10,10 +10,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   const configService = app.get(ConfigService);
   app.use(cookieParser());
-  app.enableCors({
-    origin: configService.getOrThrow("FRONTEND_URL"), // your frontend URL
-    credentials: true, // only needed if you're sending cookies/auth headers
-  });
+  app.enableCors();
   await app.listen(configService.get('PORT'));
   console.log(`App is running at ${configService.getOrThrow('PORT')}`)
 }
