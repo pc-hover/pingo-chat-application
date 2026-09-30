@@ -10,7 +10,15 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   const configService = app.get(ConfigService);
   app.use(cookieParser());
-  app.enableCors();
+  const origins = configService
+    .getOrThrow<string>('FRONTEND_URL')
+    .split(',')
+    .map((o) => o.trim().replace(/\/$/, ''));
+
+  app.enableCors({
+    origin: origins,
+    credentials: true,
+  });
   await app.listen(configService.get('PORT'));
   console.log(`App is running at ${configService.getOrThrow('PORT')}`)
 }
