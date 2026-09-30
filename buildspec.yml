@@ -16,6 +16,8 @@ phases:
       - cp -r pingo-backend/dist out/dist
       - cp pingo-backend/package.json out/package.json
       - cp Procfile out/Procfile
+      - (cd out && npm install --omit=dev)
+      - ls out/node_modules/@nestjs/core
       - ls -la out
 
 artifacts:
