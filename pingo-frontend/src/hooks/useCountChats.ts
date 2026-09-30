@@ -2,12 +2,13 @@ import { useCallback, useState } from "react";
 import { API_URL } from "../constants/urls";
 import { snackVar } from "../constants/snack";
 import { UNKNOWN_ERROR_SNACK_MESSAGE } from "../constants/error";
+import { commonFetch } from "../utils/fetch";
 
 const useCountChats = () => {
     const [chatsCount, setChatsCount] = useState<number | undefined>();
 
     const countChats = useCallback(async () => {
-        const res = await fetch(`${API_URL}/chats/count`)
+        const res = await commonFetch(`${API_URL}/chats/count`)
         console.log("this is the countChats:", res.status)
         if (!res.ok) {
             if (res.status !== 401) {

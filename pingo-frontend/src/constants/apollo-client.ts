@@ -7,6 +7,8 @@ import { GraphQLWsLink } from "@apollo/client/link/subscriptions"
 import onLogout from "../utils/onLogout";
 import { createClient } from "graphql-ws";
 import { getMainDefinition } from "@apollo/client/utilities";
+import { SetContextLink } from "@apollo/client/link/context"
+import { getToken } from "../utils/token";
 
 // let client: ApolloClient;
 
@@ -20,6 +22,13 @@ const logoutLink = new ErrorLink(({ error }) => {
         }
     }
 });
+
+const authLink = new SetContextLink((prevContext) => ({
+    headers: {
+        ...prevContext.headers,
+        authorization: getToken(),
+    },
+}));
 
 const httpLink = new HttpLink({ uri: `${API_URL}/graphql`, credentials: 'include' });
 const wsLink = new GraphQLWsLink(
@@ -41,7 +50,7 @@ const splitLink = ApolloLink.split(
 
 
 const client = new ApolloClient({
-    link: logoutLink.concat(splitLink),
+    link: logoutLink.concat(authLink).concat(splitLink),
     cache: new InMemoryCache({
         typePolicies: {
             Query: {

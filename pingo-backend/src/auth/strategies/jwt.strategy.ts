@@ -11,7 +11,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
         super({
             jwtFromRequest: ExtractJwt.fromExtractors([
-                (request: Request) => request.cookies.Authentication,
+                (request: Request) => {
+                    if (request.cookies.Authentication) {
+                        return request.cookies.Authentication
+                    }
+                    const authorization = request.headers.authorization
+
+                    if (authorization && authorization.startsWith('Bearer')) {
+                        return authorization.substring(7, authorization.length);
+                    }
+                }
 
             ]),
             secretOrKey: configService.getOrThrow('JWT_SECRET')
