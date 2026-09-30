@@ -33,7 +33,10 @@ const authLink = new SetContextLink((prevContext) => ({
 const httpLink = new HttpLink({ uri: `${API_URL}/graphql`, credentials: 'include' });
 const wsLink = new GraphQLWsLink(
     createClient({
-        url: `ws://${WS_URL}/graphql`
+        url: `ws://${WS_URL}/graphql`,
+        connectionParams: {
+            token: getToken()
+        }
     })
 )
 

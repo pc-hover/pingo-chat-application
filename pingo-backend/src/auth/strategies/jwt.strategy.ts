@@ -4,6 +4,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { TokenPayload } from "../token-payload.interface";
 import { Request } from "express";
+import { getJwt } from "../jwt";
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
 
@@ -16,10 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
                         return request.cookies.Authentication
                     }
                     const authorization = request.headers.authorization
-
-                    if (authorization && authorization.startsWith('Bearer')) {
-                        return authorization.substring(7, authorization.length);
-                    }
+                    return getJwt(authorization)
                 }
 
             ]),
