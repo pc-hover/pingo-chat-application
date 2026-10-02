@@ -35,7 +35,7 @@ import { S3Module } from './common/s3/s3.module';
             onConnect: (context: any) => {
               try {
                 const request: Request = context.extra.request;
-                const user = authService.verifyWs(request)
+                const user = authService.verifyWs(request, context.connectionParams)
                 context.user = user;
 
               } catch (err) {

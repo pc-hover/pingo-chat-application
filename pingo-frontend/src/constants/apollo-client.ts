@@ -31,14 +31,14 @@ const authLink = new SetContextLink((prevContext) => ({
 }));
 
 const httpLink = new HttpLink({ uri: `${API_URL}/graphql`, credentials: 'include' });
-const wsLink = new GraphQLWsLink(
-    createClient({
-        url: `${WS_URL}/graphql`,
-        connectionParams: {
-            token: getToken()
-        }
+export const wsClient = createClient({
+    url: `${WS_URL}/graphql`,
+    connectionParams: () => ({
+        token: getToken(),
     })
-)
+})
+
+const wsLink = new GraphQLWsLink(wsClient)
 
 const splitLink = ApolloLink.split(
 
