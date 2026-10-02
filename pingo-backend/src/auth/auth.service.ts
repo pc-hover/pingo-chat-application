@@ -5,7 +5,7 @@ import { TokenPayload } from './token-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
 import { getJwt } from './jwt';
-
+import { UnauthorizedException } from '@nestjs/common';
 @Injectable()
 export class AuthService {
 
@@ -31,13 +31,19 @@ export class AuthService {
 
     }
 
-    verifyWs(request: Request, connectionParams: any): TokenPayload {
-        const cookies: string[] = request.headers.cookie?.split("; ")
-        const authCookie = cookies?.find((cookie) => cookie.includes('Authentication')
-        )
-        const jwt = authCookie?.split('Authentication=')[1]
-        return this.jwtService.verify(jwt || getJwt(connectionParams.token))
+    verifyWs(request: Request, connectionParams: any = {}): TokenPayload {
+        const tokenFromParams = getJwt(connectionParams?.token);
 
+        const authCookie = request?.headers?.cookie
+            ?.split(';')
+            .map((c) => c.trim())
+            .find((c) => c.startsWith('Authentication='))
+            ?.substring('Authentication='.length);
+
+        const jwt = tokenFromParams || authCookie;
+        if (!jwt) throw new UnauthorizedException();
+
+        return this.jwtService.verify(jwt);
     }
     logout(response: Response) {
         response.cookie("Authentication", "", {

@@ -46,7 +46,7 @@ const ChatList = () => {
             <Stack>
                 <ChatListHeader handleChatAdd={() => { setChatListAddVisible(true) }} />
                 <Divider />
-                <Box id="chat-list-scroll" sx={{ width: '100%', bgcolor: 'background.paper', maxHeight: "80vh", overflow: "auto" }}>
+                <Box id="chat-list-scroll" sx={{ width: '100%', bgcolor: '#2b2b2b', maxHeight: "80vh", overflow: "auto" }}>
                     <InfiniteScroll
                         dataLength={data?.chats.length ?? 0}
                         next={() =>
