@@ -5,7 +5,7 @@ phases:
     runtime-versions:
       nodejs: 22
     commands:
-      - npm install -g pnpm
+      - npm install -g pnpm@10.34.3
   pre_build:
     commands:
       - pnpm install --frozen-lockfile

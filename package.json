@@ -2,6 +2,7 @@
   "name": "pingo",
   "private": true,
   "version": "1.0.0",
+  "packageManager": "pnpm@10.34.3",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
