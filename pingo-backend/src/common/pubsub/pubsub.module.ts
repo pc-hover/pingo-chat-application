@@ -17,11 +17,12 @@ import { reviver } from "./reviver";
                     const options = {
                         host: configService.getOrThrow('REDIS_HOST'),
                         port: configService.getOrThrow("REDIS_PORT"),
-                        reviver: reviver
+
                     }
                     return new RedisPubSub({
                         publisher: new Redis(options),
                         subscriber: new Redis(options),
+                        reviver: reviver
 
                     })
                 }
